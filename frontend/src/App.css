@@ -1,0 +1,126 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+  text-decoration: none;
+  background-color: #ffffee;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+span{
+  padding:5px;
+  margin-left:12px;
+}
+.loginInput
+{
+  margin:10px auto;
+  border: 1px solid #ffeeee;
+  width:500px;
+  padding:30px 10px;
+  background-color: #ffffee;
+  margin-top:50px;
+}
+.loginInput span{
+  display:inline-block;
+  width:100px;
+}
+.loginInput input{
+  width:200px;
+}
+.bookCard {
+  margin:10px auto;
+  border: 1px solid #ffeeee;
+  width:500px;
+  padding:10px;
+  background-color: #ffffee;
+}
+.authorCard {
+  margin:10px auto;
+  border: 1px solid #ffeeee;
+  width:500px;
+  padding:10px;
+  background-color: #ffffee;
+}
+.commentCard
+{
+  text-align: right;
+  font-size: 10px;
+  background-color: #ffffdd;
+}
+.primary
+{
+  display:inline-block;
+  width:100px;
+  padding:5px;
+  background-color: #ffffff;
+  font-size: 12px;
+}
+.commentInput
+{
+  margin-right:5px;
+  display:inline-block;
+  width:200px;
+  padding:5px;
+  background-color: #ffffff;
+  font-size: 12px;
+}
+
+.authorInput
+{
+  margin:10px auto;
+  border: 1px solid #ffeeee;
+  width:500px;
+  padding:30px 10px;
+  background-color: #ffffee;
+  margin-top:50px;
+}
+.authorInput span{
+  display:inline-block;
+  width:100px;
+}
+.authorInput input{
+  width:200px;
+}
+
+
+.bookInput
+{
+  margin:10px auto;
+  border: 1px solid #ffeeee;
+  width:500px;
+  padding:30px 10px;
+  background-color: #ffffee;
+  margin-top:50px;
+}
+.bookInput span{
+  display:inline-block;
+  width:100px;
+}
+.bookInput input{
+  width:200px;
+}

@@ -24,6 +24,6 @@ module.exports = {
     return userModel(user).save();
   },
   loginUser : (username,password)=>{
-    userModel.findOne({username:username,password:password}).then(user=> {return user;}).catch(err=>console.log("Authentication error"));
+    return userModel.findOne({username:username,password:password});
   }
 };

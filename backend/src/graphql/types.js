@@ -4,7 +4,8 @@ const {
   GraphQLNonNull,
   GraphQLString,
   GraphQLList,
-  GraphQLInt
+  GraphQLInt,
+  GraphQLID
 } = require("graphql");
 
 const AuthorModel=require('../models/Author');
@@ -16,7 +17,7 @@ const UserType = new GraphQLObjectType({
   description:"return User Type",
   fields:()=>({
     id:{
-      type:new GraphQLNonNull(GraphQLString),
+      type:new GraphQLNonNull(GraphQLID),
       description:"ID of user",
       resolve: user=>user.id
     },

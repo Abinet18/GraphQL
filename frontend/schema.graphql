@@ -1,0 +1,117 @@
+schema {
+  query: Query
+  mutation: Mutations
+}
+
+# return Author Type
+type AuthorType {
+  # ID of Author
+  id: String!
+
+  # name of author
+  name: String!
+
+  # age of author
+  age: Int!
+
+  # birth place of author
+  birthPlace: String!
+
+  # books written by author
+  books: [BookType]
+}
+
+# return book Type
+type BookType {
+  # ID of book
+  id: String!
+
+  # title of book
+  title: String!
+
+  # description of book
+  description: String!
+
+  # author of book
+  author: AuthorType
+
+  # comments on book
+  comments: [CommentType]
+}
+
+# return Comment Type
+type CommentType {
+  # Commenter user
+  user: UserType
+
+  # title of book
+  comment: String!
+
+  # date time of comment
+  commentdate: String!
+}
+
+# return Author Create Type
+input CreateAuthorType {
+  name: String!
+  age: Int!
+  birthPlace: String!
+}
+
+# return Create Book Type
+input CreateBookType {
+  title: String!
+  description: String!
+  authorid: String!
+}
+
+# return Create Comment Type
+input CreateCommentType {
+  bookid: String!
+  userid: String!
+  comment: String!
+}
+
+# return User Create Type
+input CreateUserType {
+  username: String!
+  email: String!
+  password: String!
+  fullname: String!
+}
+
+# Mutations for our app
+type Mutations {
+  addUser(user: CreateUserType): UserType
+  loginUser(username: String, password: String): UserType
+  addAuthor(author: CreateAuthorType): AuthorType
+  addBook(book: CreateBookType): BookType
+  addComment(comment: CreateCommentType): BookType
+}
+
+# Query interface for our app
+type Query {
+  # Query single user
+  user(id: String): UserType
+  users: [UserType]
+  author(id: String): AuthorType
+  authors: [AuthorType]
+  book(id: String): BookType
+  books: [BookType]
+}
+
+# return User Type
+type UserType {
+  # ID of user
+  id: ID!
+
+  # username of user
+  username: String!
+
+  # email of user
+  email: String!
+
+  # full name of user
+  fullname: String!
+}
+

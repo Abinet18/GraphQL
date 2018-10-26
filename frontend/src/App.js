@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import './App.css';
-import {BrowserRouter,Switch,Route,Link} from 'react-router-dom';
+import {BrowserRouter,Switch,Route,Link,withRouter} from 'react-router-dom';
+import {PrivateRoute} from './helpers/PrivateRoute';
 import authors from './components/authors';
 import books from './components/books';
 import login from './components/login';
@@ -20,19 +21,27 @@ class App extends Component {
               <span><Link className="App-link" to={'/login'}>Login</Link></span>
               <span><Link className="App-link" to={'/books'}>Books</Link></span>
               <span><Link className="App-link" to={'/signup'}>Signup</Link></span>
+              <span><button className="App-link" onClick={this.logout}>Logout</button></span>
             </div>
             <Switch>
 
               <Route exact path='/login' component={login}></Route>
-              <Route exact path='/books' component={books}></Route>
-              <Route exact path='/authors' component={authors}></Route>
-              <Route exact path='/signup' component={signup}></Route>
+              <PrivateRoute exact path='/books' component={books}/>
+              <PrivateRoute exact path='/authors' component={authors}/>
+              <Route exact path='/signup' component={signup}/>
             </Switch>
           </div>
         </BrowserRouter>
       </div>
     );
   }
+
+  logout()
+  {
+    localStorage.clear();
+    //this.props.history.push('/');
+  }
+
 }
 
 export default App;

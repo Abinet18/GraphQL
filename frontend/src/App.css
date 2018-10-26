@@ -58,6 +58,8 @@ span{
   width:500px;
   padding:10px;
   background-color: #ffffee;
+  text-align: justify;
+  text-justify: initial;
 }
 .authorCard {
   margin:10px auto;
@@ -65,6 +67,8 @@ span{
   width:500px;
   padding:10px;
   background-color: #ffffee;
+  text-align: left;
+  text-justify: initial;
 }
 .commentCard
 {
@@ -121,6 +125,6 @@ span{
   display:inline-block;
   width:100px;
 }
-.bookInput input{
+.bookInput input textarea select{
   width:200px;
 }

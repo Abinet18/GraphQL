@@ -4,6 +4,7 @@ mongoose.connect('mongodb://bloguser:blogpass1@ds033187.mlab.com:33187/mblog');
 
 const Schema = mongoose.Schema;
 const authorSchema=new Schema({
+
   name:{type:String,unique:true,required:true},
   age:{type:Number,required:true},
   birthPlace:{type:String},

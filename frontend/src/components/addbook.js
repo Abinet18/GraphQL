@@ -7,8 +7,14 @@ query addbookAuthorsQuery
 {
   authors
   {
-    id
-    name
+    edges
+    {node
+    {
+      id
+      name
+    }
+  }
+
   }
 }
 `
@@ -41,7 +47,7 @@ class addbook extends Component
           console.log(props.authors);
         return(
           <div><span>Author</span><span><select value={this.state.authorid} onChange={(e)=>this.setState({authorid:e.target.value})}>
-            {props.authors.map(author=>(<option value={author.id}>{author.name}</option>))}
+            {props.authors.edges.map(({node})=>(<option value={node.id}>{node.name}</option>))}
           </select></span></div>);
         }
         return null;

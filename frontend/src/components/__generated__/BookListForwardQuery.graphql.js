@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 74ff0bf9b655d511883ad266b6840d29
+ * @relayHash 227c467826d344fb6dbef58300ef0c4f
  */
 
 /* eslint-disable */
@@ -10,24 +10,24 @@
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
 type BookList_viewer$ref = any;
-export type booksQueryVariables = {|
+export type BookListForwardQueryVariables = {|
   count: number,
   after?: ?string,
 |};
-export type booksQueryResponse = {|
+export type BookListForwardQueryResponse = {|
   +viewer: {|
     +$fragmentRefs: BookList_viewer$ref
   |}
 |};
-export type booksQuery = {|
-  variables: booksQueryVariables,
-  response: booksQueryResponse,
+export type BookListForwardQuery = {|
+  variables: BookListForwardQueryVariables,
+  response: BookListForwardQueryResponse,
 |};
 */
 
 
 /*
-query booksQuery(
+query BookListForwardQuery(
   $count: Int!
   $after: String
 ) {
@@ -118,13 +118,13 @@ v2 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "booksQuery",
+  "name": "BookListForwardQuery",
   "id": null,
-  "text": "query booksQuery(\n  $count: Int!\n  $after: String\n) {\n  viewer {\n    ...BookList_viewer\n    id\n  }\n}\n\nfragment BookList_viewer on Viewer {\n  allBooks(first: $count, after: $after, order: \"DESC\") {\n    edges {\n      node {\n        ...book_book\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n\nfragment book_book on BookType {\n  id\n  title\n  description\n  author {\n    name\n    id\n  }\n  comments {\n    user {\n      id\n      fullname\n    }\n    comment\n    commentdate\n  }\n}\n",
+  "text": "query BookListForwardQuery(\n  $count: Int!\n  $after: String\n) {\n  viewer {\n    ...BookList_viewer\n    id\n  }\n}\n\nfragment BookList_viewer on Viewer {\n  allBooks(first: $count, after: $after, order: \"DESC\") {\n    edges {\n      node {\n        ...book_book\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n\nfragment book_book on BookType {\n  id\n  title\n  description\n  author {\n    name\n    id\n  }\n  comments {\n    user {\n      id\n      fullname\n    }\n    comment\n    commentdate\n  }\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "booksQuery",
+    "name": "BookListForwardQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -149,7 +149,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "booksQuery",
+    "name": "BookListForwardQuery",
     "argumentDefinitions": v0,
     "selections": [
       {
@@ -328,5 +328,5 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '87b10ca7a02604a3fc1cc254fe1cbb41';
+(node/*: any*/).hash = 'f469591e4623396702c43e9984e0d608';
 module.exports = node;

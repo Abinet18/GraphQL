@@ -2,20 +2,22 @@ import {commitMutation, graphql} from 'react-relay';
 import environment from '../Environment';
 const mutation = graphql`
   mutation LoginMutation(
-    $username: String!,$password:String!
+    $input:LoginUserInput!
   ) {
-    loginUser(username: $username,password:$password) {
+    loginUser(input:$input) {
+      user{
       id,
       username
       }
     }
+    }
 `;
 
-export default (username,password)=> {
+export default (username,password,history)=> {
   const variables = {
+      input:{username,
+      password},
 
-      username,
-      password,
     clientMutationId:""
   };
 
@@ -24,9 +26,10 @@ export default (username,password)=> {
     {
       mutation,
       variables,
+
       onCompleted: (response, errors) => {
-        console.log(response);
-        localStorage.setItem("authToken",response.loginUser.id);
+        localStorage.setItem("authToken",response.loginUser.user.id);
+        history.push('/books');
       },
       onError: err => console.error(err),
     },

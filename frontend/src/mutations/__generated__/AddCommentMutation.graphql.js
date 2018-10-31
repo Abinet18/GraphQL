@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 514bd54a68d3d34d5a5c8f41d6dd409e
+ * @relayHash aa5b93bff886c39fd6905033414affa0
  */
 
 /* eslint-disable */
@@ -9,18 +9,36 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
+export type AddCommentInput = {
+  comment?: ?CreateCommentType,
+  clientMutationId?: ?string,
+};
 export type CreateCommentType = {
   bookid: string,
   userid: string,
   comment: string,
 };
 export type AddCommentMutationVariables = {|
-  comment: CreateCommentType
+  input: AddCommentInput
 |};
 export type AddCommentMutationResponse = {|
   +addComment: ?{|
-    +id: string,
-    +title: string,
+    +book: ?{|
+      +id: string,
+      +title: string,
+      +description: string,
+      +author: ?{|
+        +name: string
+      |},
+      +comments: ?$ReadOnlyArray<?{|
+        +user: ?{|
+          +id: string,
+          +fullname: string,
+        |},
+        +comment: string,
+        +commentdate: string,
+      |}>,
+    |}
   |}
 |};
 export type AddCommentMutation = {|
@@ -32,11 +50,26 @@ export type AddCommentMutation = {|
 
 /*
 mutation AddCommentMutation(
-  $comment: CreateCommentType!
+  $input: AddCommentInput!
 ) {
-  addComment(comment: $comment) {
-    id
-    title
+  addComment(input: $input) {
+    book {
+      id
+      title
+      description
+      author {
+        name
+        id
+      }
+      comments {
+        user {
+          id
+          fullname
+        }
+        comment
+        commentdate
+      }
+    }
   }
 }
 */
@@ -45,51 +78,97 @@ const node/*: ConcreteRequest*/ = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "comment",
-    "type": "CreateCommentType!",
+    "name": "input",
+    "type": "AddCommentInput!",
     "defaultValue": null
   }
 ],
 v1 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "addComment",
-    "storageKey": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "comment",
-        "variableName": "comment",
-        "type": "CreateCommentType"
-      }
-    ],
-    "concreteType": "BookType",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "id",
-        "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "title",
-        "args": null,
-        "storageKey": null
-      }
-    ]
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input",
+    "type": "AddCommentInput!"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "title",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "description",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "comments",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "CommentType",
+  "plural": true,
+  "selections": [
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "user",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "UserType",
+      "plural": false,
+      "selections": [
+        v2,
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "fullname",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "comment",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "commentdate",
+      "args": null,
+      "storageKey": null
+    }
+  ]
+};
 return {
   "kind": "Request",
   "operationKind": "mutation",
   "name": "AddCommentMutation",
   "id": null,
-  "text": "mutation AddCommentMutation(\n  $comment: CreateCommentType!\n) {\n  addComment(comment: $comment) {\n    id\n    title\n  }\n}\n",
+  "text": "mutation AddCommentMutation(\n  $input: AddCommentInput!\n) {\n  addComment(input: $input) {\n    book {\n      id\n      title\n      description\n      author {\n        name\n        id\n      }\n      comments {\n        user {\n          id\n          fullname\n        }\n        comment\n        commentdate\n      }\n    }\n  }\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -97,16 +176,95 @@ return {
     "type": "Mutations",
     "metadata": null,
     "argumentDefinitions": v0,
-    "selections": v1
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "addComment",
+        "storageKey": null,
+        "args": v1,
+        "concreteType": "AddCommentPayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "book",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "BookType",
+            "plural": false,
+            "selections": [
+              v2,
+              v3,
+              v4,
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "author",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "AuthorType",
+                "plural": false,
+                "selections": [
+                  v5
+                ]
+              },
+              v6
+            ]
+          }
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "AddCommentMutation",
     "argumentDefinitions": v0,
-    "selections": v1
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "addComment",
+        "storageKey": null,
+        "args": v1,
+        "concreteType": "AddCommentPayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "book",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "BookType",
+            "plural": false,
+            "selections": [
+              v2,
+              v3,
+              v4,
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "author",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "AuthorType",
+                "plural": false,
+                "selections": [
+                  v5,
+                  v2
+                ]
+              },
+              v6
+            ]
+          }
+        ]
+      }
+    ]
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '84b1331925e2bb95d0429b658fb9b595';
+(node/*: any*/).hash = 'edaa156a75b5938e0199c974ddd48584';
 module.exports = node;

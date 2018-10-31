@@ -26,7 +26,7 @@ class book extends Component
 
   submitComment=()=>
   {
-    AddCommentMutation(this.props.book.id,localStorage.getItem("authToken"),this.state.comment);
+    AddCommentMutation(this.props.book,localStorage.getItem("authToken"),this.state.comment);
   }
 }
 

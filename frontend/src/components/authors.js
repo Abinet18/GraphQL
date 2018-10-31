@@ -2,16 +2,15 @@ import React, {Component} from 'react';
 import {QueryRenderer,graphql} from 'react-relay';
 import environment from '../Environment';
 
-import Author  from './author';
-import AddAuthor from './addauthor';
+import AuthorList  from './AuthorList';
+
 
 const allAuthorsQuery = graphql`
 query authorsQuery
 {
-  authors
-  {
-    ...author_author
-  }
+authorviewer{
+  ...AuthorList_viewer
+}
 }
 `
 class authors extends Component {
@@ -21,6 +20,7 @@ class authors extends Component {
     <QueryRenderer
     environment={environment}
     query={allAuthorsQuery}
+
     render={({error,props})=>{
       if(error)
       {
@@ -30,13 +30,12 @@ class authors extends Component {
       {
         return( <div>
           <p>Authors</p>
-          {props.authors.map(author=>(<Author author={author}/>))}
+        <AuthorList viewer={props.authorviewer}/>
         </div>)
       }
       return null;
     }}
   />
-<AddAuthor />
 </div>)
   }
 }

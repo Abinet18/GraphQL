@@ -3,10 +3,50 @@ schema {
   mutation: Mutations
 }
 
+input AddAuthorInput {
+  author: CreateAuthorType
+  clientMutationId: String
+}
+
+type AddAuthorPayload {
+  author: AuthorType
+  clientMutationId: String
+}
+
+input AddBookInput {
+  book: CreateBookType
+  clientMutationId: String
+}
+
+type AddBookPayload {
+  book: BookType
+  clientMutationId: String
+}
+
+input AddCommentInput {
+  comment: CreateCommentType
+  clientMutationId: String
+}
+
+type AddCommentPayload {
+  book: BookType
+  clientMutationId: String
+}
+
+input AddUserInput {
+  user: CreateUserType
+  clientMutationId: String
+}
+
+type AddUserPayload {
+  user: UserType
+  clientMutationId: String
+}
+
 # return Author Type
-type AuthorType {
-  # ID of Author
-  id: String!
+type AuthorType implements Node {
+  # The ID of an object
+  id: ID!
 
   # name of author
   name: String!
@@ -21,10 +61,33 @@ type AuthorType {
   books: [BookType]
 }
 
+# A connection to a list of items.
+type AuthorTypeConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [AuthorTypeEdge]
+}
+
+# An edge in a connection.
+type AuthorTypeEdge {
+  # The item at the end of the edge
+  node: AuthorType
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type AuthorViewer {
+  allAuthors(after: String, first: Int, before: String, last: Int): AuthorTypeConnection!
+  id: ID!
+}
+
 # return book Type
-type BookType {
-  # ID of book
-  id: String!
+type BookType implements Node {
+  # The ID of an object
+  id: ID!
 
   # title of book
   title: String!
@@ -37,6 +100,24 @@ type BookType {
 
   # comments on book
   comments: [CommentType]
+}
+
+# A connection to a list of items.
+type BookTypeConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [BookTypeEdge]
+}
+
+# An edge in a connection.
+type BookTypeEdge {
+  # The item at the end of the edge
+  node: BookType
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 # return Comment Type
@@ -62,13 +143,13 @@ input CreateAuthorType {
 input CreateBookType {
   title: String!
   description: String!
-  authorid: String!
+  authorid: ID!
 }
 
 # return Create Comment Type
 input CreateCommentType {
-  bookid: String!
-  userid: String!
+  bookid: ID!
+  userid: ID!
   comment: String!
 }
 
@@ -80,29 +161,73 @@ input CreateUserType {
   fullname: String!
 }
 
+input LoginUserInput {
+  username: String
+  password: String
+  clientMutationId: String
+}
+
+type LoginUserPayload {
+  user: UserType
+  clientMutationId: String
+}
+
 # Mutations for our app
 type Mutations {
-  addUser(user: CreateUserType): UserType
-  loginUser(username: String, password: String): UserType
-  addAuthor(author: CreateAuthorType): AuthorType
-  addBook(book: CreateBookType): BookType
-  addComment(comment: CreateCommentType): BookType
+  addUser(input: AddUserInput!): AddUserPayload
+  loginUser(input: LoginUserInput!): LoginUserPayload
+  addAuthor(input: AddAuthorInput!): AddAuthorPayload
+  addBook(input: AddBookInput!): AddBookPayload
+  addComment(input: AddCommentInput!): AddCommentPayload
+}
+
+# An object with an ID
+interface Node {
+  # The id of the object.
+  id: ID!
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
 }
 
 # Query interface for our app
 type Query {
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
+
   # Query single user
   user(id: String): UserType
-  users: [UserType]
+  users(after: String, first: Int, before: String, last: Int): UserTypeConnection
   author(id: String): AuthorType
-  authors: [AuthorType]
+  authors(after: String, first: Int, before: String, last: Int): AuthorTypeConnection
   book(id: String): BookType
-  books: [BookType]
+  books(after: String, first: Int, before: String, last: Int): BookTypeConnection
+
+  # Viewer pattern implementation
+  viewer: Viewer!
+
+  # Viewer pattern implementation
+  authorviewer: AuthorViewer!
 }
 
 # return User Type
-type UserType {
-  # ID of user
+type UserType implements Node {
+  # The ID of an object
   id: ID!
 
   # username of user
@@ -113,5 +238,28 @@ type UserType {
 
   # full name of user
   fullname: String!
+}
+
+# A connection to a list of items.
+type UserTypeConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [UserTypeEdge]
+}
+
+# An edge in a connection.
+type UserTypeEdge {
+  # The item at the end of the edge
+  node: UserType
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type Viewer {
+  allBooks(after: String, first: Int, before: String, last: Int, order: String): BookTypeConnection!
+  id: ID!
 }
 

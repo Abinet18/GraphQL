@@ -2,13 +2,13 @@ import React, {Component} from 'react';
 import '../App.css';
 import {QueryRenderer,graphql} from 'react-relay';
 import environment from '../Environment';
-import Book from './book';
-import AddBook from './addbook';
+import BookList from './BookList';
+
 const allBooksQuery = graphql`
-query booksQuery
+query booksQuery($count:Int!,$after:String)
 {
-books{
-  ...book_book
+viewer{
+  ...BookList_viewer
 }
 }
 `
@@ -21,6 +21,7 @@ class books extends Component {
     <QueryRenderer
       environment={environment}
       query={allBooksQuery}
+        variables={{count:3}}
       render={({error,props})=>{
         if(error)
         {
@@ -28,12 +29,10 @@ class books extends Component {
         }
         else if(props)
         {
-          return(  <div>
+          return(
+            <div>
               <p>Books</p>
-              {props.books.map(book=>(<Book book={book}/>))}
-
-              <AddBook/>
-
+              <BookList viewer={props.viewer}/>
             </div>)
         }
         return null;

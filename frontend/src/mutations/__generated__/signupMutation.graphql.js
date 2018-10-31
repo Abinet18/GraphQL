@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 979fd488078f9dad5187c4bf0ebee0c9
+ * @relayHash e41bff3e72c34044f8097173c900a22d
  */
 
 /* eslint-disable */
@@ -9,6 +9,10 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
+export type AddUserInput = {
+  user?: ?CreateUserType,
+  clientMutationId?: ?string,
+};
 export type CreateUserType = {
   username: string,
   email: string,
@@ -16,12 +20,14 @@ export type CreateUserType = {
   fullname: string,
 };
 export type signupMutationVariables = {|
-  user: CreateUserType
+  input: AddUserInput
 |};
 export type signupMutationResponse = {|
   +addUser: ?{|
-    +id: string,
-    +username: string,
+    +user: ?{|
+      +id: string,
+      +username: string,
+    |}
   |}
 |};
 export type signupMutation = {|
@@ -33,11 +39,13 @@ export type signupMutation = {|
 
 /*
 mutation signupMutation(
-  $user: CreateUserType!
+  $input: AddUserInput!
 ) {
-  addUser(user: $user) {
-    id
-    username
+  addUser(input: $input) {
+    user {
+      id
+      username
+    }
   }
 }
 */
@@ -46,8 +54,8 @@ const node/*: ConcreteRequest*/ = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "user",
-    "type": "CreateUserType!",
+    "name": "input",
+    "type": "AddUserInput!",
     "defaultValue": null
   }
 ],
@@ -60,27 +68,38 @@ v1 = [
     "args": [
       {
         "kind": "Variable",
-        "name": "user",
-        "variableName": "user",
-        "type": "CreateUserType"
+        "name": "input",
+        "variableName": "input",
+        "type": "AddUserInput!"
       }
     ],
-    "concreteType": "UserType",
+    "concreteType": "AddUserPayload",
     "plural": false,
     "selections": [
       {
-        "kind": "ScalarField",
+        "kind": "LinkedField",
         "alias": null,
-        "name": "id",
+        "name": "user",
+        "storageKey": null,
         "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "username",
-        "args": null,
-        "storageKey": null
+        "concreteType": "UserType",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "username",
+            "args": null,
+            "storageKey": null
+          }
+        ]
       }
     ]
   }
@@ -90,7 +109,7 @@ return {
   "operationKind": "mutation",
   "name": "signupMutation",
   "id": null,
-  "text": "mutation signupMutation(\n  $user: CreateUserType!\n) {\n  addUser(user: $user) {\n    id\n    username\n  }\n}\n",
+  "text": "mutation signupMutation(\n  $input: AddUserInput!\n) {\n  addUser(input: $input) {\n    user {\n      id\n      username\n    }\n  }\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -109,5 +128,5 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'd08a49736a83f1384b34735a3ac7197c';
+(node/*: any*/).hash = 'a7792cb209dfd3d10b9b3f8fc55547c9';
 module.exports = node;

@@ -2,23 +2,24 @@ import {commitMutation, graphql} from 'react-relay';
 import environment from '../Environment';
 const mutation = graphql`
   mutation signupMutation(
-    $user: CreateUserType!
+    $input:AddUserInput!
   ) {
-    addUser(user: $user) {
+    addUser(input:$input) {
+      user{
       id,
       username
       }
     }
+    }
 `;
 
-export default (username,password,email,fullname)=> {
+export default (username,password,email,fullname,history)=> {
   const variables = {
-    user: {
-      username,
-      password,
-      email,
-      fullname,
-      },
+      input:{ user:{username,
+              password,
+              email,
+              fullname}
+            },
     clientMutationId:""
   };
 
@@ -28,8 +29,11 @@ export default (username,password,email,fullname)=> {
       mutation,
       variables,
       onCompleted: (response, errors) => {
-        console.log(response);
-        localStorage.setItem("authToken",response.addUser.id);
+        if(response.addUser!=null)
+        {
+          //localStorage.setItem("authToken",response.addUser.id);
+          history.push("/login");
+        }
       },
       onError: err => console.error(err),
     },

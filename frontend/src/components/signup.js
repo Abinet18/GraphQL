@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import signupMutation from '../mutations/signupMutation';
+import {withRouter} from 'react-router-dom';
 import '../App.css';
 
 
@@ -24,7 +25,7 @@ class signup extends Component {
   {
     const {username,password,email,fullname}=this.state;
     console.log("calling signupMutation");
-    signupMutation(username,password,email,fullname);
+    signupMutation(username,password,email,fullname,this.props.history);
   }
 }
-export default signup;
+export default withRouter(signup);

@@ -8,6 +8,9 @@ const {
   GraphQLID
 } = require("graphql");
 
+const {globalIdField,connectionDefinitions}=require("graphql-relay");
+const { nodeInterface }= require("../interface/Node");
+
 const AuthorModel=require('../models/Author');
 const UserModel = require('../models/User');
 const BookModel=require('../models/Book');
@@ -15,12 +18,9 @@ const BookModel=require('../models/Book');
 const UserType = new GraphQLObjectType({
   name:'UserType',
   description:"return User Type",
+  interfaces: [nodeInterface],
   fields:()=>({
-    id:{
-      type:new GraphQLNonNull(GraphQLID),
-      description:"ID of user",
-      resolve: user=>user.id
-    },
+    id:globalIdField(),
     username:{
       type:new GraphQLNonNull(GraphQLString),
       description:"username of user",
@@ -40,33 +40,14 @@ const UserType = new GraphQLObjectType({
 
 });
 
-const CreateUserType = new GraphQLInputObjectType({
-  name:'CreateUserType',
-  description:"return User Create Type",
-  fields:{
-    username:{
-      type:new GraphQLNonNull(GraphQLString),
-        },
-    email:{
-      type:new GraphQLNonNull(GraphQLString),
-        },
-    password:{type:new GraphQLNonNull(GraphQLString)},
-    fullname:{
-      type:new GraphQLNonNull(GraphQLString),
-        }
-  }
 
-});
 
 const AuthorType = new GraphQLObjectType({
   name:'AuthorType',
   description:"return Author Type",
+  interfaces: [nodeInterface],
   fields:()=>(  {
-      id:{
-        type:new GraphQLNonNull(GraphQLString),
-        description:"ID of Author",
-        resolve: author=>author.id
-      },
+      id:globalIdField(),
       name:{
         type:new GraphQLNonNull(GraphQLString),
         description:"name of author",
@@ -91,30 +72,14 @@ const AuthorType = new GraphQLObjectType({
 
 });
 
-const CreateAuthorType = new GraphQLInputObjectType({
-  name:'CreateAuthorType',
-  description:"return Author Create Type",
-  fields:  {
-      name:{
-        type:new GraphQLNonNull(GraphQLString),
-          },
-      age:{
-        type:new GraphQLNonNull(GraphQLInt),
-          },
-      birthPlace:{type:new GraphQLNonNull(GraphQLString)}
-    }
 
-});
 
 const BookType = new GraphQLObjectType({
   name:'BookType',
   description:"return book Type",
+  interfaces: [nodeInterface],
   fields:()=>({
-    id:{
-      type:new GraphQLNonNull(GraphQLString),
-      description:"ID of book",
-      resolve: book=>book.id
-    },
+    id:globalIdField(),
     title:{
       type:new GraphQLNonNull(GraphQLString),
       description:"title of book",
@@ -137,20 +102,7 @@ const BookType = new GraphQLObjectType({
   })
 });
 
-const CreateBookType = new GraphQLInputObjectType({
-  name:'CreateBookType',
-  description:"return Create Book Type",
-  fields:{
-      title:{
-        type:new GraphQLNonNull(GraphQLString),
-          },
-      description:{
-        type:new GraphQLNonNull(GraphQLString),
-          },
-      authorid:{type:new GraphQLNonNull(GraphQLString)}
-    }
 
-});
 
 const CommentType = new GraphQLObjectType({
   name:'CommentType',
@@ -177,14 +129,27 @@ const CommentType = new GraphQLObjectType({
     })
 
 });
+const CreateAuthorType = new GraphQLInputObjectType({
+  name:'CreateAuthorType',
+  description:"return Author Create Type",
+  fields:  {
+      name:{
+        type:new GraphQLNonNull(GraphQLString),
+          },
+      age:{
+        type:new GraphQLNonNull(GraphQLInt),
+          },
+      birthPlace:{type:new GraphQLNonNull(GraphQLString)}
+    }
 
+});
 const CreateCommentType = new GraphQLInputObjectType({
   name:'CreateCommentType',
   description:"return Create Comment Type",
   fields:{
-      bookid:{type:new GraphQLNonNull(GraphQLString)},
+      bookid:{type:new GraphQLNonNull(GraphQLID)},
       userid:{
-        type:new GraphQLNonNull(GraphQLString),
+        type:new GraphQLNonNull(GraphQLID),
           },
       comment:{
         type:new GraphQLNonNull(GraphQLString),
@@ -192,9 +157,107 @@ const CreateCommentType = new GraphQLInputObjectType({
         }
 
 });
+const CreateBookType = new GraphQLInputObjectType({
+  name:'CreateBookType',
+  description:"return Create Book Type",
+  fields:{
+      title:{
+        type:new GraphQLNonNull(GraphQLString),
+          },
+      description:{
+        type:new GraphQLNonNull(GraphQLString),
+          },
+      authorid:{type:new GraphQLNonNull(GraphQLID)}
+    }
+
+});
+const CreateUserType = new GraphQLInputObjectType({
+  name:'CreateUserType',
+  description:"return User Create Type",
+  fields:{
+    username:{
+      type:new GraphQLNonNull(GraphQLString),
+        },
+    email:{
+      type:new GraphQLNonNull(GraphQLString),
+        },
+    password:{type:new GraphQLNonNull(GraphQLString)},
+    fullname:{
+      type:new GraphQLNonNull(GraphQLString),
+        }
+  }
+
+});
+
+const { connectionType: AuthorConnection}= connectionDefinitions({nodeType:AuthorType});
+const { connectionType: BookConnection } = connectionDefinitions({nodeType:BookType});
+const { connectionType: UserConnection } = connectionDefinitions({nodeType:UserType});
 
 module.exports={
   BookType,CreateBookType,
   UserType,CreateUserType,
-  AuthorType,CreateAuthorType,CreateCommentType,CommentType
+  AuthorType,CreateAuthorType,CreateCommentType,CommentType,
+  AuthorConnection,BookConnection,UserConnection
 };
+
+
+//
+// const CreateAuthorType = new GraphQLInputObjectType({
+//   name:'CreateAuthorType',
+//   description:"return Author Create Type",
+//   fields:  {
+//       name:{
+//         type:new GraphQLNonNull(GraphQLString),
+//           },
+//       age:{
+//         type:new GraphQLNonNull(GraphQLInt),
+//           },
+//       birthPlace:{type:new GraphQLNonNull(GraphQLString)}
+//     }
+//
+// });
+// const CreateCommentType = new GraphQLInputObjectType({
+//   name:'CreateCommentType',
+//   description:"return Create Comment Type",
+//   fields:{
+//       bookid:{type:new GraphQLNonNull(GraphQLString)},
+//       userid:{
+//         type:new GraphQLNonNull(GraphQLString),
+//           },
+//       comment:{
+//         type:new GraphQLNonNull(GraphQLString),
+//           },
+//         }
+//
+// });
+// const CreateBookType = new GraphQLInputObjectType({
+//   name:'CreateBookType',
+//   description:"return Create Book Type",
+//   fields:{
+//       title:{
+//         type:new GraphQLNonNull(GraphQLString),
+//           },
+//       description:{
+//         type:new GraphQLNonNull(GraphQLString),
+//           },
+//       authorid:{type:new GraphQLNonNull(GraphQLString)}
+//     }
+//
+// });
+// const CreateUserType = new GraphQLInputObjectType({
+//   name:'CreateUserType',
+//   description:"return User Create Type",
+//   fields:{
+//     username:{
+//       type:new GraphQLNonNull(GraphQLString),
+//         },
+//     email:{
+//       type:new GraphQLNonNull(GraphQLString),
+//         },
+//     password:{type:new GraphQLNonNull(GraphQLString)},
+//     fullname:{
+//       type:new GraphQLNonNull(GraphQLString),
+//         }
+//   }
+//
+// });

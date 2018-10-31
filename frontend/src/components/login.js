@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { withRouter } from 'react-router-dom';
 import LoginMutation from '../mutations/LoginMutation';
 import '../App.css';
 class login extends Component {
@@ -18,7 +19,7 @@ class login extends Component {
   login = ()=>
   {
     const {username,password}=this.state;
-    LoginMutation(username,password);
+    LoginMutation(username,password,this.props.history);
   }
 }
-export default login;
+export default withRouter(login);

@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 2132bec9cf9940a0b3e602a7868d8391
+ * @relayHash bb2d03fbaeb4492625add67994d17a92
  */
 
 /* eslint-disable */
@@ -9,14 +9,20 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
+export type LoginUserInput = {
+  username?: ?string,
+  password?: ?string,
+  clientMutationId?: ?string,
+};
 export type LoginMutationVariables = {|
-  username: string,
-  password: string,
+  input: LoginUserInput
 |};
 export type LoginMutationResponse = {|
   +loginUser: ?{|
-    +id: string,
-    +username: string,
+    +user: ?{|
+      +id: string,
+      +username: string,
+    |}
   |}
 |};
 export type LoginMutation = {|
@@ -28,12 +34,13 @@ export type LoginMutation = {|
 
 /*
 mutation LoginMutation(
-  $username: String!
-  $password: String!
+  $input: LoginUserInput!
 ) {
-  loginUser(username: $username, password: $password) {
-    id
-    username
+  loginUser(input: $input) {
+    user {
+      id
+      username
+    }
   }
 }
 */
@@ -42,14 +49,8 @@ const node/*: ConcreteRequest*/ = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "username",
-    "type": "String!",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
-    "name": "password",
-    "type": "String!",
+    "name": "input",
+    "type": "LoginUserInput!",
     "defaultValue": null
   }
 ],
@@ -62,33 +63,38 @@ v1 = [
     "args": [
       {
         "kind": "Variable",
-        "name": "password",
-        "variableName": "password",
-        "type": "String"
-      },
-      {
-        "kind": "Variable",
-        "name": "username",
-        "variableName": "username",
-        "type": "String"
+        "name": "input",
+        "variableName": "input",
+        "type": "LoginUserInput!"
       }
     ],
-    "concreteType": "UserType",
+    "concreteType": "LoginUserPayload",
     "plural": false,
     "selections": [
       {
-        "kind": "ScalarField",
+        "kind": "LinkedField",
         "alias": null,
-        "name": "id",
+        "name": "user",
+        "storageKey": null,
         "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "username",
-        "args": null,
-        "storageKey": null
+        "concreteType": "UserType",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "username",
+            "args": null,
+            "storageKey": null
+          }
+        ]
       }
     ]
   }
@@ -98,7 +104,7 @@ return {
   "operationKind": "mutation",
   "name": "LoginMutation",
   "id": null,
-  "text": "mutation LoginMutation(\n  $username: String!\n  $password: String!\n) {\n  loginUser(username: $username, password: $password) {\n    id\n    username\n  }\n}\n",
+  "text": "mutation LoginMutation(\n  $input: LoginUserInput!\n) {\n  loginUser(input: $input) {\n    user {\n      id\n      username\n    }\n  }\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -117,5 +123,5 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'd884111778ac8e3604a86480593ac0d4';
+(node/*: any*/).hash = 'f89592c868ffef89880aeb81b80e8044';
 module.exports = node;

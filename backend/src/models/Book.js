@@ -20,8 +20,8 @@ const UserModel=require('./User');
 const AuthorModel=require('./Author');
 
 module.exports = {
-  getBooks: ()=> {
-    return bookModel.find();
+  getBooks: order=> {
+    return bookModel.find().sort({_id:order=='DESC'?-1:1});
   },
   getBook: id=>{
       return bookModel.findById(id);
@@ -34,10 +34,19 @@ module.exports = {
   addComment : async (id,comment)=>
   {
   const book=await bookModel.findById(id);
-  if(book==null) return null;
+  if(book==null) {
+    console.log("book not found")
+    return null;
+  }
   const user=await UserModel.getUser(comment.userid);
-  if(user==null) return null;
-  return bookModel.findByIdAndUpdate(id,{$push:{comments:comment}});
+  {
+  if(user==null) {
+    console.log("user not found");
+    return null;
+  }
+
+}
+  return bookModel.findByIdAndUpdate(id,{$push:{comments:comment}},{new:true});
  },
   getAuthorBooks: authorid=>{
     return bookModel.find({authorid:authorid});

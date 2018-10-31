@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 85f85291c888d3ca93d46582e7fd52a9
+ * @relayHash 370fb139dfbce75484d114505f09a00f
  */
 
 /* eslint-disable */
@@ -11,10 +11,14 @@
 import type { ConcreteRequest } from 'relay-runtime';
 export type addbookAuthorsQueryVariables = {||};
 export type addbookAuthorsQueryResponse = {|
-  +authors: ?$ReadOnlyArray<?{|
-    +id: string,
-    +name: string,
-  |}>
+  +authors: ?{|
+    +edges: ?$ReadOnlyArray<?{|
+      +node: ?{|
+        +id: string,
+        +name: string,
+      |}
+    |}>
+  |}
 |};
 export type addbookAuthorsQuery = {|
   variables: addbookAuthorsQueryVariables,
@@ -26,8 +30,12 @@ export type addbookAuthorsQuery = {|
 /*
 query addbookAuthorsQuery {
   authors {
-    id
-    name
+    edges {
+      node {
+        id
+        name
+      }
+    }
   }
 }
 */
@@ -40,22 +48,44 @@ var v0 = [
     "name": "authors",
     "storageKey": null,
     "args": null,
-    "concreteType": "AuthorType",
-    "plural": true,
+    "concreteType": "AuthorTypeConnection",
+    "plural": false,
     "selections": [
       {
-        "kind": "ScalarField",
+        "kind": "LinkedField",
         "alias": null,
-        "name": "id",
+        "name": "edges",
+        "storageKey": null,
         "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "name",
-        "args": null,
-        "storageKey": null
+        "concreteType": "AuthorTypeEdge",
+        "plural": true,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "node",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "AuthorType",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          }
+        ]
       }
     ]
   }
@@ -65,7 +95,7 @@ return {
   "operationKind": "query",
   "name": "addbookAuthorsQuery",
   "id": null,
-  "text": "query addbookAuthorsQuery {\n  authors {\n    id\n    name\n  }\n}\n",
+  "text": "query addbookAuthorsQuery {\n  authors {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -84,5 +114,5 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '63da70eee23c80c2009e39ca71e92cbc';
+(node/*: any*/).hash = '29ac76b542dbc638f2db16e03e8a20eb';
 module.exports = node;

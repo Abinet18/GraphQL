@@ -9,6 +9,9 @@ import login from './components/login';
 import signup from './components/signup';
 
 class App extends Component {
+  state = {
+    loggedIn:localStorage.getItem("authToken")!=null
+  }
   render() {
     return (
       <div className="App">
@@ -18,10 +21,10 @@ class App extends Component {
             <div>
               <span><Link className="App-link" to={'/'}>Home</Link></span>
               <span><Link className="App-link" to={'/authors'}>Authors</Link></span>
-              <span><Link className="App-link" to={'/login'}>Login</Link></span>
+              {!this.state.loggedIn && <span><Link className="App-link" to={'/login'}>Login</Link></span>}
               <span><Link className="App-link" to={'/books'}>Books</Link></span>
-              <span><Link className="App-link" to={'/signup'}>Signup</Link></span>
-              <span><button className="App-link" onClick={this.logout}>Logout</button></span>
+              {!this.state.loggedIn && <span><Link className="App-link" to={'/signup'}>Signup</Link></span>}
+              {this.state.loggedIn && <span><button className="App-link" onClick={this.logout}>Logout</button></span>}
             </div>
             <Switch>
 
@@ -36,10 +39,10 @@ class App extends Component {
     );
   }
 
-  logout()
+  logout=()=>
   {
     localStorage.clear();
-    //this.props.history.push('/');
+    this.setState({loggedIn:false})
   }
 
 }

@@ -55,7 +55,7 @@ span{
 {
   margin:10px auto;
   border: 1px solid #ffeeee;
-  width:600px;
+  width:580px;
   padding:30px 10px;
   background-color: #e6ecff;
   margin-top:50px;
@@ -269,4 +269,16 @@ select {
 {
   margin:10px;
   vertical-align:top;
+}
+
+.heading {
+  margin:10px auto;
+  border: 1px solid #ffeeee;
+  width:580px;
+  padding:10px;
+  background-color: #e6ecff;
+  text-align: center;
+  font-family:"Georgia";
+  font-weight:bold;
+  font-size:20;
 }

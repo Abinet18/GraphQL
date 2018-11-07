@@ -29,7 +29,7 @@ class authors extends Component {
       else if(props)
       {
         return( <div>
-          <p>Authors</p>
+          <p className="heading">Authors</p>
         <AuthorList viewer={props.authorviewer}/>
         </div>)
       }

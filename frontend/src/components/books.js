@@ -31,7 +31,7 @@ class books extends Component {
         {
           return(
             <div>
-              <p>Books</p>
+              <p className="heading">Books</p>
               <BookList viewer={props.viewer}/>
             </div>)
         }

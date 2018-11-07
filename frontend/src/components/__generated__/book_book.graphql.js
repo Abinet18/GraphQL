@@ -9,8 +9,8 @@
 /*::
 import type { ConcreteFragment } from 'relay-runtime';
 import type { FragmentReference } from "relay-runtime";
-declare export opaque type book_book$ref: FragmentReference;
-export type book_book = {|
+declare export opaque type Book_book$ref: FragmentReference;
+export type Book_book = {|
   +id: string,
   +title: string,
   +description: string,
@@ -25,7 +25,7 @@ export type book_book = {|
     +comment: string,
     +commentdate: string,
   |}>,
-  +$refType: book_book$ref,
+  +$refType: Book_book$ref,
 |};
 */
 
@@ -40,7 +40,7 @@ var v0 = {
 };
 return {
   "kind": "Fragment",
-  "name": "book_book",
+  "name": "Book_book",
   "type": "BookType",
   "metadata": null,
   "argumentDefinitions": [],
@@ -126,5 +126,5 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '4b236b25804cf068058922ba03df4d11';
+(node/*: any*/).hash = 'd3a447b123d3b180b79c4697809ed80d';
 module.exports = node;

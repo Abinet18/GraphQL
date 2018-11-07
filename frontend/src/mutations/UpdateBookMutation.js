@@ -1,11 +1,12 @@
-import {commitMutation, graphql} from 'react-relay';
+import {commitMutation, graphql,toGlobalId} from 'react-relay';
 import { ConnectionHandler } from "relay-runtime";
 import environment from '../Environment';
 const mutation = graphql`
-  mutation AddCommentMutation(
-    $input: AddCommentInput!
+  mutation UpdateBookMutation(
+    $input: UpdateBookInput!
   ) {
-    addComment(input:$input) {
+    updateBook(input:$input)
+    {
       book{
         id
         title
@@ -20,46 +21,38 @@ const mutation = graphql`
           commentdate
         }
     }
+    }
   }
-  }
+
   `;
 
-export default (book,userid,comment)=> {
-
+export default (book)=> {
 
   const variables = {
-    input:{comment: {
-      bookid:book.id,
-      userid:userid,
-      comment:comment,
-    }},
+    input:{book:{id:book.id,title:book.title,description:book.description,authorid:book.authorid}}  ,
     clientMutationId:""
   };
 
+  console.log(variables);
   const optimisticResponse = {
-      addComment: {
-        book: {
-        ...book,
-        comments:book.comments.concat({user:{id:userid,fullname:''},comment:comment,commentdate:new Date()})
-        },
+      updateBook: {
+        book
     }
   };
 
   const updater =  (proxyStore) => {
 
-    const addCommentField= proxyStore.getRootField('addComment');
-    const book= addCommentField.getLinkedRecord('book');
+    const updateBookField= proxyStore.getRootField('updateBook');
+    const book= updateBookField.getLinkedRecord('book');
     if(!book) return;
     const viewerId='viewer-fixed'
     const viewerProxy=proxyStore.get(viewerId);
 
     const connection=ConnectionHandler.getConnection(viewerProxy,"BookList_allBooks");
     if(connection){
-       console.log("inserting");
-       const newEdge=ConnectionHandler.createEdge(proxyStore,connection,book,'BookEdge');
+       console.log("deleting");
        ConnectionHandler.deleteNode(connection,book.id);
-       //ConnectionHandler.insertEdgeAfter(connection,newEdge);
-    }
+       }
   };
 
 

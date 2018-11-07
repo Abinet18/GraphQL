@@ -161,6 +161,26 @@ input CreateUserType {
   fullname: String!
 }
 
+input DeleteAuthorInput {
+  id: ID
+  clientMutationId: String
+}
+
+type DeleteAuthorPayload {
+  id: ID
+  clientMutationId: String
+}
+
+input DeleteBookInput {
+  id: ID
+  clientMutationId: String
+}
+
+type DeleteBookPayload {
+  id: ID
+  clientMutationId: String
+}
+
 input LoginUserInput {
   username: String
   password: String
@@ -168,7 +188,7 @@ input LoginUserInput {
 }
 
 type LoginUserPayload {
-  user: UserType
+  token: String
   clientMutationId: String
 }
 
@@ -179,6 +199,9 @@ type Mutations {
   addAuthor(input: AddAuthorInput!): AddAuthorPayload
   addBook(input: AddBookInput!): AddBookPayload
   addComment(input: AddCommentInput!): AddCommentPayload
+  deleteBook(input: DeleteBookInput!): DeleteBookPayload
+  deleteAuthor(input: DeleteAuthorInput!): DeleteAuthorPayload
+  updateBook(input: UpdateBookInput!): UpdateBookPayload
 }
 
 # An object with an ID
@@ -223,6 +246,24 @@ type Query {
 
   # Viewer pattern implementation
   authorviewer: AuthorViewer!
+}
+
+input UpdateBookInput {
+  book: UpdateBookType
+  clientMutationId: String
+}
+
+type UpdateBookPayload {
+  book: BookType
+  clientMutationId: String
+}
+
+# return Update Book Type
+input UpdateBookType {
+  id: ID
+  title: String
+  description: String
+  authorid: ID
 }
 
 # return User Type

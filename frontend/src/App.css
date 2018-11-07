@@ -1,5 +1,8 @@
 .App {
+  width:600px;
   text-align: center;
+  margin:auto;
+  font-size:16px;
 }
 
 .App-logo {
@@ -8,7 +11,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #ffffff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -17,13 +20,25 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
-.App-link {
-  color: #61dafb;
-  text-decoration: none;
-  background-color: #ffffee;
+.links{
+  display:flex;
+  justify-content:space-between;
+  background-color:#7FDBFF;
+  padding:10px;
+  border-top-left-radius: 20px;
 }
-
+.App-link {
+  color: #000000;
+  text-decoration: none;
+  width:100px;
+  padding:10px;
+}
+.App-link:hover
+{
+  border-top-left-radius:10px;
+  background-color:#7EACFE;
+  cursor:pointer;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -40,10 +55,11 @@ span{
 {
   margin:10px auto;
   border: 1px solid #ffeeee;
-  width:500px;
+  width:600px;
   padding:30px 10px;
-  background-color: #ffffee;
+  background-color: #e6ecff;
   margin-top:50px;
+  border-bottom-right-radius: 20px;
 }
 .loginInput span{
   display:inline-block;
@@ -55,26 +71,54 @@ span{
 .bookCard {
   margin:10px auto;
   border: 1px solid #ffeeee;
-  width:500px;
+  border-radius:20px;
+  width:580px;
   padding:10px;
-  background-color: #ffffee;
+  background-color: #e6ecff;
   text-align: justify;
+  font-family:"Georgia";
   text-justify: initial;
 }
 .authorCard {
   margin:10px auto;
   border: 1px solid #ffeeee;
-  width:500px;
+  width:580px;
   padding:10px;
-  background-color: #ffffee;
+  background-color: #e6ecff;
   text-align: left;
   text-justify: initial;
+  border-radius:20px;
 }
 .commentCard
 {
-  text-align: right;
-  font-size: 10px;
-  background-color: #ffffdd;
+
+  padding:5px;
+  justify-content:flex-end;
+  font-size: 12px;
+  background-color: #e6ecff;
+  display:flex;
+  align-items: flex-start;
+}
+.commentsCard
+{
+  margin:auto;
+  padding:5px;
+  justify-content:space-between;
+  font-size: 12px;
+  background-color: #e6ecff;
+  display:flex;
+  align-items: flex-end;
+  flex-direction:column;
+  width:600px;
+  border-radius:20px;;
+}
+.commentfull
+{
+  display:inline-block;
+  width:250px;
+  margin-bottom:5px;
+  vertical-align:top;
+  text-align:justify;
 }
 .primary
 {
@@ -83,6 +127,15 @@ span{
   padding:5px;
   background-color: #ffffff;
   font-size: 12px;
+  border-radius:20px;;
+  outline:none;
+}
+.wideButton{
+  width:200px;
+}
+.deleteButton{
+  background-color:#a00;
+  color:#fff;
 }
 .commentInput
 {
@@ -92,20 +145,25 @@ span{
   padding:5px;
   background-color: #ffffff;
   font-size: 12px;
+  border-radius: 10px;
+  outline:none;
+
 }
 
 .authorInput
 {
   margin:10px auto;
   border: 1px solid #ffeeee;
-  width:500px;
+  width:580px;
   padding:30px 10px;
-  background-color: #ffffee;
+  background-color:#e6ecff;
   margin-top:50px;
+  border-radius:20px;
 }
 .authorInput span{
   display:inline-block;
   width:100px;
+  text-align:right;
 }
 .authorInput input{
   width:200px;
@@ -116,15 +174,99 @@ span{
 {
   margin:10px auto;
   border: 1px solid #ffeeee;
-  width:500px;
+  width:580px;
   padding:30px 10px;
-  background-color: #ffffee;
+  background-color: #e6ecff;
   margin-top:50px;
+  border-radius:20px;;
 }
 .bookInput span{
   display:inline-block;
   width:100px;
+  text-align:right;
+  vertical-align:top;
+  margin-right:10px;
 }
 .bookInput input textarea select{
   width:200px;
+  padding:10px;
+  height:30px;
+  border:10px;
+}
+.commenter
+{
+  display:inline-block;
+  text-align:right;
+  width:100px;
+  margin-right:10px;
+  vertical-align:top;
+}
+.comment{
+  display:inline-block;
+  width:250px;
+  margin-bottom:5px;
+  vertical-align:top;
+  max-height:50px;
+  overflow:auto;
+  text-overflow:ellipsis;
+}
+.backdropStyle{
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 1000;
+      background-color: rgba(0, 0, 0, .65);
+}
+.modalStyle
+{
+  position:fixed;
+  top: 50px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10000;
+  overflow: auto;
+  text-align: center;
+  margin:auto;
+
+  padding: 4px;
+  cursor: pointer;
+  min-width:600px;
+  min-height:500px;
+}
+
+input {
+  width:200px;
+  padding:10px;
+  font-size:16px;
+  outline:none;
+  border-radius:20px;;
+  border-style:none;
+}
+textarea {
+  width:200px;
+  padding:10px;
+  height:40px;
+  border-radius:20px;;
+  border-style:none;
+  outline:none;
+}
+select {
+  width:200px;
+  padding:10px;
+  height:30px;
+  margin:0px;
+  border-radius:20px;;
+  border-style:none;
+  font-size:16px;
+}
+
+.bookInput div, .authorInput div
+{
+  margin:10px;
+  vertical-align:top;
 }

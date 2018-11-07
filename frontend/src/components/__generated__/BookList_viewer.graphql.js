@@ -8,14 +8,14 @@
 
 /*::
 import type { ConcreteFragment } from 'relay-runtime';
-type book_book$ref = any;
+type Book_book$ref = any;
 import type { FragmentReference } from "relay-runtime";
 declare export opaque type BookList_viewer$ref: FragmentReference;
 export type BookList_viewer = {|
   +allBooks: {|
     +edges: ?$ReadOnlyArray<?{|
       +node: ?{|
-        +$fragmentRefs: book_book$ref
+        +$fragmentRefs: Book_book$ref
       |}
     |}>,
     +pageInfo: {|
@@ -86,7 +86,7 @@ const node/*: ConcreteFragment*/ = {
               "selections": [
                 {
                   "kind": "FragmentSpread",
-                  "name": "book_book",
+                  "name": "Book_book",
                   "args": null
                 },
                 {
@@ -137,5 +137,5 @@ const node/*: ConcreteFragment*/ = {
   ]
 };
 // prettier-ignore
-(node/*: any*/).hash = '2c62b3d6363e2c2d10b891885abc46f2';
+(node/*: any*/).hash = 'f0c9a381317abef42e3d53d02ffe4ab0';
 module.exports = node;

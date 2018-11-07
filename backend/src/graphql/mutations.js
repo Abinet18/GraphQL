@@ -3,15 +3,16 @@ const {
   GraphQLNonNull,
   GraphQLString,
   GraphQLList,
+  GraphQLID,
   GraphQLInt
 } = require("graphql");
-
-const { fromGlobalId } = require("graphql-relay");
+const {globalIdField,connectionDefinitions}=require("graphql-relay");
+const { fromGlobalId,toGlobalId } = require("graphql-relay");
 const {mutationWithClientMutationId} = require("graphql-relay");
 const AuthorModel=require('../models/Author');
 const UserModel = require('../models/User');
 const BookModel=require('../models/Book');
-const {UserType,CreateUserType,CommentType,CreateCommentType,AuthorType,CreateAuthorType,BookType,CreateBookType} = require('./types.js');
+const {UserType,CreateUserType,CommentType,CreateCommentType,AuthorType,CreateAuthorType,BookType,CreateBookType,UpdateBookType} = require('./types.js');
 
 const AddUserMutation = mutationWithClientMutationId({
   name:"AddUser",
@@ -31,11 +32,11 @@ const LoginUserMutation = mutationWithClientMutationId({
           password: {type:GraphQLString}
         },
   outputFields:{
-    user: {type:UserType}
+    token: {type:GraphQLString}
   },
   mutateAndGetPayload: args=> {
     return new Promise((resolve,reject)=>{
-      UserModel.loginUser(args.username,args.password).then(user=>resolve({user})).catch(reject);
+      UserModel.loginUser(args.username,args.password).then(token=>resolve({token:token})).catch(reject);
     });
   }
 })
@@ -46,7 +47,8 @@ const AddAuthorMutation = mutationWithClientMutationId({
   outputFields:{
     author: {type:AuthorType}
   },
-  mutateAndGetPayload: args=> {
+  mutateAndGetPayload: (args,context)=> {
+    //if(context.user==null) return null;
     return new Promise((resolve,reject)=>{
       AuthorModel.createAuthor(args.author).then(author=>resolve({author})).catch(reject);
     });
@@ -68,6 +70,55 @@ const AddBookMutation = mutationWithClientMutationId({
     });
   }
 })
+const DeleteBookMutation = mutationWithClientMutationId({
+  name:"DeleteBook",
+  inputFields:{id:{type:GraphQLID}},
+  outputFields:{
+    id: {type:GraphQLID}
+  },
+  mutateAndGetPayload: args=> {
+    return new Promise((resolve,reject)=>{
+      const bookid=args.id;
+      const {id} = fromGlobalId(bookid);
+      BookModel.deleteBook(id).then((id)=>resolve({id:bookid})).catch(reject);
+    });
+  }
+})
+
+const UpdateBookMutation = mutationWithClientMutationId({
+  name:"UpdateBook",
+  inputFields:{book:{type:UpdateBookType}},
+  outputFields:{
+    book: {type:BookType}
+  },
+  mutateAndGetPayload: args=> {
+    return new Promise((resolve,reject)=>{
+      const book=args.book;
+      const {id} = fromGlobalId(book.id);
+      book.id=id;
+      if(book.authorid)
+      {
+        book.authorid=fromGlobalId(book.authorid).id;
+      }
+      BookModel.updateBook(book).then((book)=>resolve({book})).catch(reject);
+    });
+  }
+})
+
+const DeleteAuthorMutation = mutationWithClientMutationId({
+  name:"DeleteAuthor",
+  inputFields:{id:{type:GraphQLID}},
+  outputFields:{
+    id: {type:GraphQLID}
+  },
+  mutateAndGetPayload: args=> {
+    return new Promise((resolve,reject)=>{
+      const authorid=args.id;
+      const {id} = fromGlobalId(authorid);
+      AuthorModel.deleteAuthor(id).then((id)=>resolve({id:authorid})).catch(reject);
+    });
+  }
+})
 
 const AddCommentMutation = mutationWithClientMutationId({
   name:"AddComment",
@@ -75,10 +126,10 @@ const AddCommentMutation = mutationWithClientMutationId({
   outputFields:{
     book: {type:BookType}
   },
-  mutateAndGetPayload: args=> {
+  mutateAndGetPayload: (args,context)=> {
     return new Promise((resolve,reject)=>{
       const bookid=fromGlobalId(args.comment.bookid).id;
-       const userid=fromGlobalId(args.comment.userid).id;
+       const userid=context.user.id;
       BookModel.addComment(bookid,{userid:userid,comment:args.comment.comment}).then(book=>resolve({book})).catch(reject);
     });
   }
@@ -90,10 +141,12 @@ const Mutations= new GraphQLObjectType({
   fields: {
     addUser: AddUserMutation,
     loginUser: LoginUserMutation,
-
     addAuthor : AddAuthorMutation,
     addBook : AddBookMutation,
-    addComment: AddCommentMutation
+    addComment: AddCommentMutation,
+    deleteBook:DeleteBookMutation,
+    deleteAuthor: DeleteAuthorMutation,
+    updateBook: UpdateBookMutation
     }
   }
 );

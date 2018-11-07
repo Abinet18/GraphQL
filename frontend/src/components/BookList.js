@@ -1,7 +1,7 @@
 import React from 'react';
 import { createPaginationContainer,graphql } from 'react-relay';
 import AddBook from './addbook';
-import Book from './book';
+import Book from './Book';
 class BookList extends React.Component
 {
   render()
@@ -9,7 +9,7 @@ class BookList extends React.Component
     return(
     <div>
     {this.props.viewer.allBooks.edges.map(({node})=>(<Book book={node}/>))}
-    <button onClick={this._loadMore}>Load More</button>
+    <button className="primary" onClick={this._loadMore}>Load More</button>
     <AddBook />
     </div>
   );
@@ -35,7 +35,7 @@ export default createPaginationContainer(BookList,graphql`
       {
         node
         {
-          ...book_book
+          ...Book_book
         }
       }
       pageInfo {

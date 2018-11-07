@@ -16,7 +16,8 @@ const network = Network.create((operation, variables) => {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'authorization':localStorage.getItem("authToken")
     },
     body: JSON.stringify({
       query: operation.text,

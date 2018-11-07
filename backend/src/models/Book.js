@@ -50,6 +50,13 @@ module.exports = {
  },
   getAuthorBooks: authorid=>{
     return bookModel.find({authorid:authorid});
+  },
+  deleteBook :  async id => {
+
+    return bookModel.findByIdAndDelete(id);
+  },
+  updateBook : book => {
+    return bookModel.findByIdAndUpdate(book.id,{$set:{...book}},{new:true});
   }
 
 };

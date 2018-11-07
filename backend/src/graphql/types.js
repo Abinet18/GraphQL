@@ -103,7 +103,6 @@ const BookType = new GraphQLObjectType({
 });
 
 
-
 const CommentType = new GraphQLObjectType({
   name:'CommentType',
   description:"return Comment Type",
@@ -171,6 +170,23 @@ const CreateBookType = new GraphQLInputObjectType({
     }
 
 });
+
+const UpdateBookType = new GraphQLInputObjectType({
+  name:'UpdateBookType',
+  description:"return Update Book Type",
+  fields:{
+      id: { type:GraphQLID},
+      title:{
+        type:GraphQLString,
+          },
+      description:{
+        type:GraphQLString,
+          },
+      authorid:{type:GraphQLID}
+    }
+
+});
+
 const CreateUserType = new GraphQLInputObjectType({
   name:'CreateUserType',
   description:"return User Create Type",
@@ -194,7 +210,7 @@ const { connectionType: BookConnection } = connectionDefinitions({nodeType:BookT
 const { connectionType: UserConnection } = connectionDefinitions({nodeType:UserType});
 
 module.exports={
-  BookType,CreateBookType,
+  BookType,CreateBookType,UpdateBookType,
   UserType,CreateUserType,
   AuthorType,CreateAuthorType,CreateCommentType,CommentType,
   AuthorConnection,BookConnection,UserConnection

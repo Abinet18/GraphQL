@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 227c467826d344fb6dbef58300ef0c4f
+ * @relayHash 652020d232b47ab5c8ae71f79ab3f91a
  */
 
 /* eslint-disable */
@@ -41,7 +41,7 @@ fragment BookList_viewer on Viewer {
   allBooks(first: $count, after: $after, order: "DESC") {
     edges {
       node {
-        ...book_book
+        ...Book_book
         id
         __typename
       }
@@ -54,7 +54,7 @@ fragment BookList_viewer on Viewer {
   }
 }
 
-fragment book_book on BookType {
+fragment Book_book on BookType {
   id
   title
   description
@@ -120,7 +120,7 @@ return {
   "operationKind": "query",
   "name": "BookListForwardQuery",
   "id": null,
-  "text": "query BookListForwardQuery(\n  $count: Int!\n  $after: String\n) {\n  viewer {\n    ...BookList_viewer\n    id\n  }\n}\n\nfragment BookList_viewer on Viewer {\n  allBooks(first: $count, after: $after, order: \"DESC\") {\n    edges {\n      node {\n        ...book_book\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n\nfragment book_book on BookType {\n  id\n  title\n  description\n  author {\n    name\n    id\n  }\n  comments {\n    user {\n      id\n      fullname\n    }\n    comment\n    commentdate\n  }\n}\n",
+  "text": "query BookListForwardQuery(\n  $count: Int!\n  $after: String\n) {\n  viewer {\n    ...BookList_viewer\n    id\n  }\n}\n\nfragment BookList_viewer on Viewer {\n  allBooks(first: $count, after: $after, order: \"DESC\") {\n    edges {\n      node {\n        ...Book_book\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n\nfragment Book_book on BookType {\n  id\n  title\n  description\n  author {\n    name\n    id\n  }\n  comments {\n    user {\n      id\n      fullname\n    }\n    comment\n    commentdate\n  }\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

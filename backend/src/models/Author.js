@@ -21,5 +21,8 @@ module.exports = {
   },
   createAuthor : author=> {
     return AuthorModel(author).save();
+  },
+  deleteAuthor : id=> {
+    return AuthorModel.findByIdAndDelete(id);
   }
 };

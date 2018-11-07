@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash a3d3ce4bf4f2ad56928e9a010a0305c3
+ * @relayHash 391eece98f33338a592717ea743287d2
  */
 
 /* eslint-disable */
@@ -9,32 +9,31 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-export type LoginUserInput = {
-  username?: ?string,
-  password?: ?string,
+export type DeleteAuthorInput = {
+  id?: ?string,
   clientMutationId?: ?string,
 };
-export type LoginMutationVariables = {|
-  input: LoginUserInput
+export type DeleteAuthorMutationVariables = {|
+  input: DeleteAuthorInput
 |};
-export type LoginMutationResponse = {|
-  +loginUser: ?{|
-    +token: ?string
+export type DeleteAuthorMutationResponse = {|
+  +deleteAuthor: ?{|
+    +id: ?string
   |}
 |};
-export type LoginMutation = {|
-  variables: LoginMutationVariables,
-  response: LoginMutationResponse,
+export type DeleteAuthorMutation = {|
+  variables: DeleteAuthorMutationVariables,
+  response: DeleteAuthorMutationResponse,
 |};
 */
 
 
 /*
-mutation LoginMutation(
-  $input: LoginUserInput!
+mutation DeleteAuthorMutation(
+  $input: DeleteAuthorInput!
 ) {
-  loginUser(input: $input) {
-    token
+  deleteAuthor(input: $input) {
+    id
   }
 }
 */
@@ -44,7 +43,7 @@ var v0 = [
   {
     "kind": "LocalArgument",
     "name": "input",
-    "type": "LoginUserInput!",
+    "type": "DeleteAuthorInput!",
     "defaultValue": null
   }
 ],
@@ -52,23 +51,23 @@ v1 = [
   {
     "kind": "LinkedField",
     "alias": null,
-    "name": "loginUser",
+    "name": "deleteAuthor",
     "storageKey": null,
     "args": [
       {
         "kind": "Variable",
         "name": "input",
         "variableName": "input",
-        "type": "LoginUserInput!"
+        "type": "DeleteAuthorInput!"
       }
     ],
-    "concreteType": "LoginUserPayload",
+    "concreteType": "DeleteAuthorPayload",
     "plural": false,
     "selections": [
       {
         "kind": "ScalarField",
         "alias": null,
-        "name": "token",
+        "name": "id",
         "args": null,
         "storageKey": null
       }
@@ -78,13 +77,13 @@ v1 = [
 return {
   "kind": "Request",
   "operationKind": "mutation",
-  "name": "LoginMutation",
+  "name": "DeleteAuthorMutation",
   "id": null,
-  "text": "mutation LoginMutation(\n  $input: LoginUserInput!\n) {\n  loginUser(input: $input) {\n    token\n  }\n}\n",
+  "text": "mutation DeleteAuthorMutation(\n  $input: DeleteAuthorInput!\n) {\n  deleteAuthor(input: $input) {\n    id\n  }\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "LoginMutation",
+    "name": "DeleteAuthorMutation",
     "type": "Mutations",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -92,12 +91,12 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "LoginMutation",
+    "name": "DeleteAuthorMutation",
     "argumentDefinitions": v0,
     "selections": v1
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '51f3914618bb0f85d18f4894329ee480';
+(node/*: any*/).hash = '25b2ac5376a50a0a1140fa3a0a81af8e';
 module.exports = node;

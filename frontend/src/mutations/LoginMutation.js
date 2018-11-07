@@ -5,18 +5,17 @@ const mutation = graphql`
     $input:LoginUserInput!
   ) {
     loginUser(input:$input) {
-      user{
-      id,
-      username
-      }
+      token
     }
     }
 `;
 
-export default (username,password,history)=> {
+export default (username,password,history,callback)=> {
   const variables = {
-      input:{username,
-      password},
+      input:{
+        username,
+        password
+      },
 
     clientMutationId:""
   };
@@ -28,8 +27,13 @@ export default (username,password,history)=> {
       variables,
 
       onCompleted: (response, errors) => {
-        localStorage.setItem("authToken",response.loginUser.user.id);
+        if(response.loginUser && response.loginUser.token)
+        {
+
+        localStorage.setItem("authToken",response.loginUser.token);
+        callback();
         history.push('/books');
+      }
       },
       onError: err => console.error(err),
     },

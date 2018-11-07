@@ -1,9 +1,9 @@
 import React,{Component} from 'react';
 import {QueryRenderer,graphql} from 'react-relay';
 import environment from '../Environment';
-import AddBookMutation from '../mutations/AddBookMutation';
-const addbookAuthorsQuery = graphql`
-query addbookAuthorsQuery
+import UpdateBookMutation from '../mutations/UpdateBookMutation';
+const UpdateBookAuthorsQuery = graphql`
+query UpdateBookAuthorsQuery
 {
   authors
   {
@@ -19,25 +19,26 @@ query addbookAuthorsQuery
 }
 `
 
-class addbook extends Component
+class UpdateBook extends Component
 {
+
   state = {
-    title:"",
-    authorid:"",
-    description:""
+    title:this.props.book.title,
+    authorid:this.props.book.author && this.props.book.author.id ? this.props.book.author.id:'',
+    description:this.props.book.description
   };
   render()
   {
+
     return (
     <div className="bookInput">
-      Add New Book
+      Update Book
       <div><span>Title</span><span><input type="text" value={this.state.title} onChange={(e)=>this.setState({title:e.target.value})}></input></span></div>
-      <div><span>Description</span><span><textarea value={this.state.description} onChange={(e)=>this.setState({description:e.target.value})}>
-      </textarea></span></div>
+      <div><span>Description</span><span><textarea value={this.state.description} onChange={(e)=>this.setState({description:e.target.value})}></textarea></span></div>
 
       <QueryRenderer
       environment={environment}
-      query={addbookAuthorsQuery}
+      query={UpdateBookAuthorsQuery}
       render={({error,props})=>{
         if(error)
         {
@@ -55,16 +56,17 @@ class addbook extends Component
       }}
     />
 
-      <div><span></span><span><button className="primary" onClick={this.addBook}>Add Book</button></span></div>
+      <div><span></span><span><button className="primary" onClick={this.updateBook}>Update</button></span></div>
     </div>
   )
   }
 
-  addBook= ()=>
+  updateBook= ()=>
   {
     const {title,description,authorid}=this.state;
-    AddBookMutation(title,authorid,description);
+    UpdateBookMutation({...this.props.book,title:title,description:description,authorid:authorid});
+    this.props.onClose();
   }
 }
 
-export default addbook;
+export default UpdateBook;

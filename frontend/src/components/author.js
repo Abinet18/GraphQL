@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
 import { createFragmentContainer,graphql} from 'react-relay';
 import DeleteAuthorMutation from '../mutations/DeleteAuthorMutation';
-
+import Book from './Book';
+import Modal from './Modal';
 class author extends Component<Props> {
-
+state={showBook:null};
   render()
   {
     const {author}=this.props;
     return (
-      <div className="authorCard">
+    <div className="authorCard">
       <p><strong>{author.name}</strong>,{author.age}
       ,from {author.birthPlace}</p>
       {author.books.map(book=>(
-        <div><p>{book.title}</p></div>
+        <div><p className="author-book-class">{book.title}</p></div>
       ))}
       <div>
         <button class="primary deleteButton" onClick={this.onDelete}>Delete</button>
@@ -23,6 +24,8 @@ class author extends Component<Props> {
   onDelete=()=>{
     DeleteAuthorMutation(this.props.author);
   }
+
+
 }
 
 export default createFragmentContainer(author,graphql`

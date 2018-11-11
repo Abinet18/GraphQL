@@ -8,7 +8,8 @@ import UpdateBook from './UpdateBook';
 import Comments from './Comments';
 class Book extends Component
 {
-  state={comment:"",
+  state={
+        comment:"",
         showUpdateModal:false,
         showCommentsModal:false,
         showDetailsModal:false

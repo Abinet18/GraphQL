@@ -6,7 +6,9 @@ import AddCommentMutation from '../mutations/AddCommentMutation';
 import DeleteBookMutation from '../mutations/DeleteBookMutation';
 import UpdateBook from './UpdateBook';
 import Comments from './Comments';
-class Book extends Component
+
+
+class Book extends Component<Props>
 {
   state={
         comment:"",
@@ -17,6 +19,7 @@ class Book extends Component
   render()
   {
     const {book,detail}=this.props;
+
     const comments=Immutable.List(book.comments).sortBy(comment=>comment.commentdate).reverse();
 
 
@@ -45,7 +48,7 @@ class Book extends Component
       {detail!==true?<button className="primary" onClick={this.showDetails}>Full View</button>:''}
     </div>
     <Modal show={this.state.showUpdateModal} onClose={this.onUpdateClose}>
-      <UpdateBook book={this.props.book} onClose={this.onUpdateClose}/>
+      <UpdateBook book={this.props.book} onClose={this.onUpdateClose} onUpdateBook={this.props.onUpdateBook} authors={this.props.authors}/>
     </Modal>
     <Modal show={this.state.showCommentsModal} onClose={this.onCommentsClose}>
     <Comments comments={comments}/>
@@ -60,11 +63,11 @@ class Book extends Component
 
   submitComment=()=>
   {
-    AddCommentMutation(this.props.book,localStorage.getItem("authToken"),this.state.comment);
+    AddCommentMutation(this.props.book,localStorage.getItem("authToken"),this.state.comment,this.props.onAddComment);
     this.setState({comment:""});
   }
   onDelete=()=>{
-    DeleteBookMutation(this.props.book);
+    DeleteBookMutation(this.props.book,this.props.onDeleteBook);
   }
   onUpdate=()=>{
     this.setState({showUpdateModal:true});
@@ -91,19 +94,4 @@ class Book extends Component
 
 }
 
-export default createFragmentContainer(Book,graphql`
-  fragment Book_book on BookType {
-    id
-    title
-    description
-    author{name}
-    comments{
-      user{
-        id
-        fullname
-      }
-      comment
-      commentdate
-    }
-  }
-`);
+export default Book;

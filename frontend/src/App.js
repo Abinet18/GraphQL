@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import './App.css';
 import {BrowserRouter,Switch,Route,Link,withRouter} from 'react-router-dom';
 import {PrivateRoute} from './helpers/PrivateRoute';
-import authors from './components/authors';
-import books from './components/books';
+import AuthorContainer from './components/AuthorContainer';
+import BookContainer from './components/BookContainer';
 import Login from './components/login';
 import signup from './components/signup';
 
@@ -29,8 +29,8 @@ class App extends Component {
             <Switch>
 
               <Route exact path='/login' render={(props) => <Login {...props} onSuccess={this.onLogin} />}></Route>
-              <PrivateRoute exact path='/books' component={books}/>
-              <PrivateRoute exact path='/authors' component={authors}/>
+              <PrivateRoute exact path='/books' component={BookContainer}/>
+              <PrivateRoute exact path='/authors' component={AuthorContainer}/>
               <Route exact path='/signup' component={signup}/>
             </Switch>
           </div>

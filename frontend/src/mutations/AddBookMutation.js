@@ -26,7 +26,7 @@ const mutation = graphql`
 }
 `;
 
-export default (title,authorid,description)=> {
+export default (title,authorid,description,onAddBook)=> {
   const variables = {
     input:{book: {
       title,
@@ -56,14 +56,7 @@ export default (title,authorid,description)=> {
     console.log(addBookField);
     const newBook= addBookField.getLinkedRecord('book');
     if(!newBook) return;
-    const viewerId='viewer-fixed'
-    const viewerProxy = proxyStore.get(viewerId);
-    const connection=ConnectionHandler.getConnection(viewerProxy,"BookList_allBooks");
-    if(connection){
-      console.log("inserting");
-      const newEdge=ConnectionHandler.createEdge(proxyStore,connection,newBook,'BookEdge');
-      ConnectionHandler.insertEdgeAfter(connection,newEdge);
-    }
+    this.props.onAddBook(newBook);
   };
 
   commitMutation(
@@ -71,11 +64,12 @@ export default (title,authorid,description)=> {
     {
       mutation,
       variables,
-      optimisticUpdater: updater,
-      updater: updater,
+      //optimisticUpdater: updater,
+      //updater: updater,
       onCompleted: (response, errors) => {
-        console.log("completed");
-        console.log(response);
+        console.log(response.addBook.book);
+        console.log(errors);
+        onAddBook(response.addBook.book);
       },
       onError: err => console.error(err),
       optimisticResponse

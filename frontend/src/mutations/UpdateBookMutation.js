@@ -26,34 +26,13 @@ const mutation = graphql`
 
   `;
 
-export default (book)=> {
+export default (book,onUpdateBook)=> {
 
   const variables = {
     input:{book:{id:book.id,title:book.title,description:book.description,authorid:book.authorid}}  ,
     clientMutationId:""
   };
 
-  console.log(variables);
-  const optimisticResponse = {
-      updateBook: {
-        book
-    }
-  };
-
-  const updater =  (proxyStore) => {
-
-    const updateBookField= proxyStore.getRootField('updateBook');
-    const book= updateBookField.getLinkedRecord('book');
-    if(!book) return;
-    const viewerId='viewer-fixed'
-    const viewerProxy=proxyStore.get(viewerId);
-
-    const connection=ConnectionHandler.getConnection(viewerProxy,"BookList_allBooks");
-    if(connection){
-       console.log("deleting");
-       ConnectionHandler.deleteNode(connection,book.id);
-       }
-  };
 
 
   commitMutation(
@@ -63,11 +42,10 @@ export default (book)=> {
       variables,
       onCompleted: (response, errors) => {
         console.log(response);
+        onUpdateBook(response.updateBook.book);
       },
       onError: err => console.error(err),
-      updater:updater,
-      optimisticUpdater:updater,
-      optimisticResponse
+
     },
   );
 }

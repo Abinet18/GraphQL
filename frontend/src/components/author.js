@@ -28,15 +28,4 @@ state={showBook:null};
 
 }
 
-export default createFragmentContainer(author,graphql`
-fragment author_author on AuthorType {
-  id
-  name
-  age
-  birthPlace
-  books
-  {
-    title
-  }
-}
-`);
+export default author;

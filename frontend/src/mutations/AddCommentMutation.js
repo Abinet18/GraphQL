@@ -24,7 +24,7 @@ const mutation = graphql`
   }
   `;
 
-export default (book,userid,comment)=> {
+export default (book,userid,comment,onAddComment)=> {
 
 
   const variables = {
@@ -36,31 +36,6 @@ export default (book,userid,comment)=> {
     clientMutationId:""
   };
 
-  const optimisticResponse = {
-      addComment: {
-        book: {
-        ...book,
-        comments:book.comments.concat({user:{id:userid,fullname:''},comment:comment,commentdate:new Date()})
-        },
-    }
-  };
-
-  const updater =  (proxyStore) => {
-
-    const addCommentField= proxyStore.getRootField('addComment');
-    const book= addCommentField.getLinkedRecord('book');
-    if(!book) return;
-    const viewerId='viewer-fixed'
-    const viewerProxy=proxyStore.get(viewerId);
-
-    const connection=ConnectionHandler.getConnection(viewerProxy,"BookList_allBooks");
-    if(connection){
-       console.log("inserting");
-       const newEdge=ConnectionHandler.createEdge(proxyStore,connection,book,'BookEdge');
-       ConnectionHandler.deleteNode(connection,book.id);
-       //ConnectionHandler.insertEdgeAfter(connection,newEdge);
-    }
-  };
 
 
   commitMutation(
@@ -70,11 +45,9 @@ export default (book,userid,comment)=> {
       variables,
       onCompleted: (response, errors) => {
         console.log(response);
+        onAddComment(response.addComment.book);
       },
       onError: err => console.error(err),
-      updater:updater,
-      optimisticUpdater:updater,
-      optimisticResponse
     },
   );
 }

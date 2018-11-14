@@ -2,13 +2,19 @@ import React from 'react';
 import { createFragmentContainer,graphql } from 'react-relay';
 import AddAuthor from './addauthor';
 import Author from './author';
+
+
 class AuthorList extends React.Component
 {
   render()
   {
+    const authors=[];
+    this.props.authors.forEach(author=>{
+      authors.push(author);
+    })
     return(
     <div>
-    {this.props.viewer.allAuthors.edges.map(({node})=>(<Author author={node}/>))}
+    {authors.map((author,key)=>(<Author key={key} author={author}/>))}
     <AddAuthor />
     </div>
   );
@@ -16,18 +22,4 @@ class AuthorList extends React.Component
 
 }
 
-export default createFragmentContainer(AuthorList,graphql`
-  fragment AuthorList_viewer on AuthorViewer
-  {
-    allAuthors(last:100) @connection(key:"AuthorList_allAuthors",filters:[])
-    {
-      edges
-      {
-        node
-        {
-          ...author_author
-        }
-      }
-    }
-  }
-`)
+export default AuthorList;

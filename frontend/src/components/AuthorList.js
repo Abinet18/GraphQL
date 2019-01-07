@@ -8,7 +8,7 @@ class AuthorList extends React.Component
   {
     return(
     <div>
-    {this.props.viewer.allAuthors.edges.map(({node})=>(<Author author={node}/>))}
+    {this.props.viewer.allAuthors.edges.map(({node})=>(<Author key={node.id} author={node}/>))}
     <AddAuthor />
     </div>
   );

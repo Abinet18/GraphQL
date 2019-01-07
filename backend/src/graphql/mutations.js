@@ -6,6 +6,7 @@ const {
   GraphQLID,
   GraphQLInt
 } = require("graphql");
+const sendMail = require('../Util/mailer');
 const {globalIdField,connectionDefinitions}=require("graphql-relay");
 const { fromGlobalId,toGlobalId } = require("graphql-relay");
 const {mutationWithClientMutationId} = require("graphql-relay");
@@ -13,6 +14,7 @@ const AuthorModel=require('../models/Author');
 const UserModel = require('../models/User');
 const BookModel=require('../models/Book');
 const {UserType,CreateUserType,CommentType,CreateCommentType,AuthorType,CreateAuthorType,BookType,CreateBookType,UpdateBookType} = require('./types.js');
+const {BOOK_ADDED,COMMENT_ADDED,pubsub} = require("./Subscriptions");
 
 const AddUserMutation = mutationWithClientMutationId({
   name:"AddUser",
@@ -66,7 +68,12 @@ const AddBookMutation = mutationWithClientMutationId({
       const book=args.book;
       const {id} = fromGlobalId(book.authorid);
       book.authorid=id;
-      BookModel.createBook(book).then(book=>resolve({book})).catch(reject);
+      BookModel.createBook(book).then(book=>{
+      //  console.log(book,BOOK_ADDED,pubsub);
+
+        pubsub.publish(BOOK_ADDED,{addBook:book});
+        sendMail(book.title);
+        resolve({book})}).catch(reject);
     });
   }
 })
@@ -130,7 +137,12 @@ const AddCommentMutation = mutationWithClientMutationId({
     return new Promise((resolve,reject)=>{
       const bookid=fromGlobalId(args.comment.bookid).id;
        const userid=context.user.id;
-      BookModel.addComment(bookid,{userid:userid,comment:args.comment.comment}).then(book=>resolve({book})).catch(reject);
+      BookModel.addComment(bookid,{userid:userid,comment:args.comment.comment}).then(book=>
+        {
+          pubsub.publish(`${COMMENT_ADDED}${args.comment.bookid}`,{addComment:book});
+          resolve({book});
+        }).catch(reject);
+
     });
   }
 })
@@ -152,58 +164,3 @@ const Mutations= new GraphQLObjectType({
 );
 
 module.exports=Mutations;
-
-
-// const Mutations= new GraphQLObjectType({
-//   description:"Mutations for our app",
-//   name:"Mutations",
-//   fields: {
-//     addUser: {
-//       type:UserType,
-//       args: {
-//         user:{type:CreateUserType}
-//       },
-//       resolve: (parent,args)=>{
-//         return UserModel.createUser(args.user);
-//       }
-//     },
-//     loginUser: {
-//       type:UserType,
-//       args: {
-//         username:{type:GraphQLString},
-//         password: {type:GraphQLString}
-//       },
-//       resolve: (parent,args)=>{
-//         return UserModel.loginUser(args.username,args.password);
-//       }
-//
-//     },
-//     addAuthor : {
-//       type:AuthorType,
-//       args: {
-//         author:{type:CreateAuthorType}
-//       },
-//       resolve: (_,args)=>{
-//         return AuthorModel.createAuthor(args.author);
-//       }
-//     },
-//     addBook : {
-//       type:BookType,
-//       args: {
-//         book:{type:CreateBookType}
-//       },
-//       resolve: (_,args)=>{
-//         return BookModel.createBook(args.book);
-//       }
-//     },
-//     addComment: {
-//       type:BookType,
-//       args: {
-//         comment: {type:CreateCommentType}
-//       },
-//       resolve: (_,args)=> {
-//         return BookModel.addComment(args.comment.bookid,{userid:args.comment.userid,comment:args.comment.comment});
-//       }
-//     }
-//   }
-// });

@@ -20,8 +20,8 @@ const UserModel=require('./User');
 const AuthorModel=require('./Author');
 
 module.exports = {
-  getBooks: order=> {
-    return bookModel.find().sort({_id:order=='DESC'?-1:1});
+  getBooks: (order,filter)=> {
+    return bookModel.find(filter).sort({_id:order=='DESC'?-1:1});
   },
   getBook: id=>{
       return bookModel.findById(id);

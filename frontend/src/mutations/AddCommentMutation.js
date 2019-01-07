@@ -55,10 +55,9 @@ export default (book,userid,comment)=> {
 
     const connection=ConnectionHandler.getConnection(viewerProxy,"BookList_allBooks");
     if(connection){
-       console.log("inserting");
-       const newEdge=ConnectionHandler.createEdge(proxyStore,connection,book,'BookEdge');
+
        ConnectionHandler.deleteNode(connection,book.id);
-       //ConnectionHandler.insertEdgeAfter(connection,newEdge);
+
     }
   };
 
@@ -72,9 +71,9 @@ export default (book,userid,comment)=> {
         console.log(response);
       },
       onError: err => console.error(err),
-      updater:updater,
-      optimisticUpdater:updater,
-      optimisticResponse
+      //updater:updater,
+      //optimisticUpdater:updater,
+      //optimisticResponse
     },
   );
 }

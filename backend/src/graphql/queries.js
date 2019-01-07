@@ -25,8 +25,11 @@ const Viewer=new GraphQLObjectType({
   fields:{
     allBooks: {
       type: new GraphQLNonNull(BookConnection),
-      args:{...connectionArgs,order:{type:GraphQLString}},
-      resolve: (_,args) => connectionFromPromisedArray(BookModel.getBooks(args.order),args)
+      args:{...connectionArgs,order:{type:GraphQLString},filter:{type:GraphQLString}},
+      resolve: (_,args) => {
+        const titleContainsFilter=args.filter==null || args.filter=="" ? {}:{title:{$regex:new RegExp(".*"+args.filter+".*"),$options:'i'}};
+        return connectionFromPromisedArray(BookModel.getBooks(args.order,titleContainsFilter),args)
+      }
     },
     id:{
       type:new GraphQLNonNull(GraphQLID),

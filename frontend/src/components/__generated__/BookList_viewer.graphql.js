@@ -54,6 +54,11 @@ const node/*: ConcreteFragment*/ = {
       "kind": "RootArgument",
       "name": "after",
       "type": "String"
+    },
+    {
+      "kind": "RootArgument",
+      "name": "filter",
+      "type": "String"
     }
   ],
   "selections": [
@@ -137,5 +142,5 @@ const node/*: ConcreteFragment*/ = {
   ]
 };
 // prettier-ignore
-(node/*: any*/).hash = 'f0c9a381317abef42e3d53d02ffe4ab0';
+(node/*: any*/).hash = '91b7967e45b7056fdb042c213d0bd073';
 module.exports = node;

@@ -4,6 +4,7 @@ import Modal from './Modal';
 import {createFragmentContainer,graphql} from 'react-relay';
 import AddCommentMutation from '../mutations/AddCommentMutation';
 import DeleteBookMutation from '../mutations/DeleteBookMutation';
+import commentSubscription from '../subscriptions/commentSubscription';
 import UpdateBook from './UpdateBook';
 import Comments from './Comments';
 class Book extends Component
@@ -14,6 +15,9 @@ class Book extends Component
         showCommentsModal:false,
         showDetailsModal:false
       };
+  componentDidMount(){
+        commentSubscription(this.props.book.id);
+      }
   render()
   {
     const {book,detail}=this.props;

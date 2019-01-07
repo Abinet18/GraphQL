@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import { createFragmentContainer,graphql} from 'react-relay';
 import DeleteAuthorMutation from '../mutations/DeleteAuthorMutation';
-import Book from './Book';
-import Modal from './Modal';
+
 class author extends Component<Props> {
 state={showBook:null};
   render()

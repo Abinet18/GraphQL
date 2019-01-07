@@ -2,7 +2,7 @@ import {commitMutation, graphql} from 'react-relay';
 import { ConnectionHandler } from "relay-runtime";
 import environment from '../Environment';
 
-let tempID=0;
+
 const mutation = graphql`
   mutation AddBookMutation(
     $input: AddBookInput!
@@ -71,8 +71,8 @@ export default (title,authorid,description)=> {
     {
       mutation,
       variables,
-      optimisticUpdater: updater,
-      updater: updater,
+      //optimisticUpdater: updater,
+      //updater: updater,
       onCompleted: (response, errors) => {
         console.log("completed");
         console.log(response);

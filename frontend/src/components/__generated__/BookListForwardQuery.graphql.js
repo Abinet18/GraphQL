@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 652020d232b47ab5c8ae71f79ab3f91a
+ * @relayHash dd83b2061a09296466d9b8e200ac69b8
  */
 
 /* eslint-disable */
@@ -13,6 +13,7 @@ type BookList_viewer$ref = any;
 export type BookListForwardQueryVariables = {|
   count: number,
   after?: ?string,
+  filter?: ?string,
 |};
 export type BookListForwardQueryResponse = {|
   +viewer: {|
@@ -30,6 +31,7 @@ export type BookListForwardQuery = {|
 query BookListForwardQuery(
   $count: Int!
   $after: String
+  $filter: String
 ) {
   viewer {
     ...BookList_viewer
@@ -38,7 +40,7 @@ query BookListForwardQuery(
 }
 
 fragment BookList_viewer on Viewer {
-  allBooks(first: $count, after: $after, order: "DESC") {
+  allBooks(first: $count, after: $after, order: "DESC", filter: $filter) {
     edges {
       node {
         ...Book_book
@@ -86,6 +88,12 @@ var v0 = [
     "name": "after",
     "type": "String",
     "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "filter",
+    "type": "String",
+    "defaultValue": null
   }
 ],
 v1 = [
@@ -93,6 +101,12 @@ v1 = [
     "kind": "Variable",
     "name": "after",
     "variableName": "after",
+    "type": "String"
+  },
+  {
+    "kind": "Variable",
+    "name": "filter",
+    "variableName": "filter",
     "type": "String"
   },
   {
@@ -120,7 +134,7 @@ return {
   "operationKind": "query",
   "name": "BookListForwardQuery",
   "id": null,
-  "text": "query BookListForwardQuery(\n  $count: Int!\n  $after: String\n) {\n  viewer {\n    ...BookList_viewer\n    id\n  }\n}\n\nfragment BookList_viewer on Viewer {\n  allBooks(first: $count, after: $after, order: \"DESC\") {\n    edges {\n      node {\n        ...Book_book\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n\nfragment Book_book on BookType {\n  id\n  title\n  description\n  author {\n    name\n    id\n  }\n  comments {\n    user {\n      id\n      fullname\n    }\n    comment\n    commentdate\n  }\n}\n",
+  "text": "query BookListForwardQuery(\n  $count: Int!\n  $after: String\n  $filter: String\n) {\n  viewer {\n    ...BookList_viewer\n    id\n  }\n}\n\nfragment BookList_viewer on Viewer {\n  allBooks(first: $count, after: $after, order: \"DESC\", filter: $filter) {\n    edges {\n      node {\n        ...Book_book\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n\nfragment Book_book on BookType {\n  id\n  title\n  description\n  author {\n    name\n    id\n  }\n  comments {\n    user {\n      id\n      fullname\n    }\n    comment\n    commentdate\n  }\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -328,5 +342,5 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'f469591e4623396702c43e9984e0d608';
+(node/*: any*/).hash = '944fa010f64b80b58b58df0fc903c236';
 module.exports = node;

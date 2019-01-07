@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import './App.css';
-import {BrowserRouter,Switch,Route,Link,withRouter} from 'react-router-dom';
+import {BrowserRouter,Switch,Route,Link} from 'react-router-dom';
 import {PrivateRoute} from './helpers/PrivateRoute';
 import authors from './components/authors';
 import books from './components/books';
@@ -19,10 +19,10 @@ class App extends Component {
           <div>
             <h2>Welcome Home</h2>
             <div className="links">
-              <span span className="App-link"><Link className="App-link" to={'/'}>Home</Link></span>
-              <span span className="App-link"><Link className="App-link" to={'/authors'}>Authors</Link></span>
-              {!this.state.loggedIn && <span span className="App-link"><Link className="App-link" to={'/login'}>Login</Link></span>}
-              <span span className="App-link"><Link className="App-link" to={'/books'}>Books</Link></span>
+              <span className="App-link"><Link className="App-link" to={'/'}>Home</Link></span>
+              <span className="App-link"><Link className="App-link" to={'/authors'}>Authors</Link></span>
+              {!this.state.loggedIn && <span className="App-link"><Link className="App-link" to={'/login'}>Login</Link></span>}
+              <span className="App-link"><Link className="App-link" to={'/books'}>Books</Link></span>
               {!this.state.loggedIn && <span className="App-link"><Link className="App-link" to={'/signup'}>Signup</Link></span>}
               {this.state.loggedIn && <span className="App-link" onClick={this.logout}>Logout</span>}
             </div>

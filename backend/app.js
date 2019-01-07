@@ -1,11 +1,19 @@
 const express = require('express');
 const jwt=require('jsonwebtoken');
-const { buildSchema } = require('graphql');
-const graphqlHTTP = require('express-graphql');
-let port = process.env.PORT || 8000;
+const { execute,subscribe } = require('graphql');
+const { createServer } = require('http');
+const bodyParser = require('body-parser');
+//const graphqlHTTP = require('express-graphql');
+const { graphqlExpress,graphiqlExpress } = require("apollo-server-express");
+let port = 8000;
 const SECRET="secret1987654";
 const schema=require('./src/graphql/schema');
 const cors=require('cors');
+
+const { SubscriptionServer }  = require('subscriptions-transport-ws');
+const subscriptionsEndpoint = `ws://localhost:${port}/subscriptions`;
+
+//const { PubSub } = require('graphql-subscriptions');
 
 const app = express();
 
@@ -30,12 +38,31 @@ app.use(addUser);
 //     rootValue: root,
 //     graphiql: true
 // }));
-app.use('/', graphqlHTTP((req) => ({
+app.use('/graphql', bodyParser.json(),graphqlExpress(req=>({
      schema: schema,
      context: {user:req.user,SECRET:SECRET},
-     rootValue:root,
-     pretty: true,
-     graphiql: true
+     // rootValue:root,
+     // pretty: true,
+     // graphiql: true,
+     // subscriptionsEndpoint:subscriptionsEndpoint
+
    })));
-app.listen(port);
-console.log('GraphQL API Server up and running at localhost:' + port);
+
+app.use('/graphiql', graphiqlExpress({
+  endpointURL: '/graphql',
+  subscriptionsEndpoint: subscriptionsEndpoint
+}));
+
+const server=createServer(app);
+//const pubsub=new PubSub();
+server.listen(port,()=>{
+  console.log('GraphQL API Server up and running at localhost:' + port);
+
+  new SubscriptionServer({
+    execute,
+    subscribe,
+    schema},{
+      server:server,
+      path:'/subscriptions'
+  })
+});

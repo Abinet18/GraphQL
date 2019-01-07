@@ -1,6 +1,7 @@
 schema {
   query: Query
   mutation: Mutations
+  subscription: Subscriptions
 }
 
 input AddAuthorInput {
@@ -248,6 +249,11 @@ type Query {
   authorviewer: AuthorViewer!
 }
 
+type Subscriptions {
+  addBook: BookType
+  addComment(bookid: String): BookType
+}
+
 input UpdateBookInput {
   book: UpdateBookType
   clientMutationId: String
@@ -300,7 +306,7 @@ type UserTypeEdge {
 }
 
 type Viewer {
-  allBooks(after: String, first: Int, before: String, last: Int, order: String): BookTypeConnection!
+  allBooks(after: String, first: Int, before: String, last: Int, order: String, filter: String): BookTypeConnection!
   id: ID!
 }
 

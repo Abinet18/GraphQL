@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {QueryRenderer,graphql} from 'react-relay';
+import {graphql} from 'react-relay';
 import {fetchQuery} from 'relay-runtime';
 import environment from '../Environment';
 import AddBookMutation from '../mutations/AddBookMutation';
@@ -43,18 +43,7 @@ class addbook extends Component
       <div><span>Description</span><span><textarea value={this.state.description} onChange={(e)=>this.setState({description:e.target.value})}>
       </textarea></span></div>
 
-      {/* <QueryRenderer
-      environment={environment}
-      query={addbookAuthorsQuery}
-      render={({error,props})=>{
-        if(error)
-        {
-          return <div>{error.message}</div>
-        }
-        else if(props)
-        {
-          //console.log(props.authors);
-        return( */}
+
         {
           (this.state.authors!==null && this.state.authors!==undefined)?  (<div><span>Author</span><span><select value={this.state.authorid}
           onChange={(e)=>this.setState({authorid:e.target.value})}>
@@ -71,6 +60,9 @@ class addbook extends Component
   {
     const {title,description,authorid}=this.state;
     AddBookMutation(title,authorid,description);
+    this.setState({
+      title:"",authorid:null,description:''
+    })
   }
   getAuthors=()=>
    {
